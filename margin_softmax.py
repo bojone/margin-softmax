@@ -26,7 +26,7 @@ def sparse_amsoftmax_loss(y_true, y_pred, scale=30, margin=0.35):
 
 
 # 简单的类A-Softmax（m=4）
-def sparse_simpler_asoftmax_loss(y_true, y_pred, scale=30, margin=0.35):
+def sparse_simpler_asoftmax_loss(y_true, y_pred, scale=30):
     y_true = K.expand_dims(y_true[:, 0], 1) # 保证y_true的shape=(None, 1)
     y_true = K.cast(y_true, 'int32') # 保证y_true的dtype=int32
     batch_idxs = K.arange(0, K.shape(y_true)[0])
