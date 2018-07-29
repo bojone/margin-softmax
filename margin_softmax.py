@@ -4,8 +4,8 @@ import keras.backend as K
 
 
 # 普通sparse交叉熵，以logits为输入
-def sparse_logits_categorical_crossentropy(y_true, y_pred):
-    return K.sparse_categorical_crossentropy(y_true, y_pred, from_logits=True)
+def sparse_logits_categorical_crossentropy(y_true, y_pred, scale=30):
+    return K.sparse_categorical_crossentropy(y_true, scale * y_pred, from_logits=True)
 
 
 # 稀疏版AM-Softmax
