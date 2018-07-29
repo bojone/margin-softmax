@@ -10,7 +10,7 @@ maxlen = 32
 batch_size = 100
 min_count = 5
 word_size = 128
-epochs = 20
+epochs = 25 # amsoftmax需要25个epoch，其它需要20个epoch
 
 
 data = pd.read_csv('tongyiju.csv', encoding='utf-8', header=None, delimiter='\t')
