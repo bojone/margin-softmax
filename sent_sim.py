@@ -121,15 +121,18 @@ def evaluate(): # 评测函数
 # 定义Callback器，计算验证集的acc，并保存最优模型
 class Evaluate(Callback):
     def __init__(self):
-        self.top1_accs = []
+        self.accs = {'top1': [], 'top5': [], 'top10': []}
         self.highest = 0.
     def on_epoch_end(self, epoch, logs=None):
         top1_acc, top5_acc, top10_acc = evaluate()
-        self.top1_accs.append(top1_acc)
+        self.accs['top1'].append(top1_acc)
+        self.accs['top5'].append(top5_acc)
+        self.accs['top10'].append(top10_acc)
         if top1_acc >= self.highest: # 保存最优模型权重
             self.highest = top1_acc
             model.save_weights('sent_sim_amsoftmax.model')
-        json.dump([self.scores, self.highest], open('valid.log', 'w'), indent=4)
+        json.dump({'accs': self.accs, 'highest_top1': self.highest},
+                  open('valid_amsoftmax.log', 'w'), indent=4)
         print 'top1_acc: %s, top5_acc: %s, top10_acc: %s' % (top1_acc, top5_acc, top10_acc)
 
 
