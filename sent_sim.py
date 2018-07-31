@@ -11,7 +11,7 @@ from margin_softmax import *
 from keras.callbacks import Callback
 
 
-num_train = 90000 # 前9万组问题拿来做训练
+num_train_groups = 90000 # 前9万组问题拿来做训练
 maxlen = 32
 batch_size = 100
 min_count = 5
@@ -57,12 +57,12 @@ def string2id(s):
 
 
 data[2] = data[1].apply(string2id)
-train_data = data[data[0] < num_train]
+train_data = data[data[0] < num_train_groups]
 train_data = train_data.sample(frac=1)
 x_train = np.array(list(train_data[2]))
 y_train = np.array(list(train_data[0])).reshape((-1,1))
 
-valid_data = data[data[0] >= num_train]
+valid_data = data[data[0] >= num_train_groups]
 
 
 # 正式模型，基于GRU的分类器
@@ -72,7 +72,7 @@ x_embedded = Embedding(len(chars)+2,
 x = CuDNNGRU(word_size)(x_embedded)
 x = Lambda(lambda x: K.l2_normalize(x, 1))(x)
 
-pred = Dense(num_train,
+pred = Dense(num_train_groups,
              use_bias=False,
              kernel_constraint=unit_norm())(x)
 
